@@ -1,8 +1,16 @@
-# Skycast Weather Dashboard
+# MedLens — Medicine Scanner
 
-A responsive weather dashboard built with React and Vite. The default route (`/`) searches for a city or uses the browser's optional location permission, then displays current conditions, an 8-point hourly outlook, and a 7-day forecast.
+A safety-first hackathon prototype for scanning medicine packaging and finding official drug-label information.
 
-Weather data is fetched live from the public [Open-Meteo geocoding and forecast APIs](https://open-meteo.com/), with no API key required. The dashboard includes Celsius/Fahrenheit conversion, precipitation chances, humidity, wind, UV index, loading and error states, and a mobile-friendly layout. The existing medicine-scanner prototype remains available at `/medicine`.
+## What it does
+
+- Collects a name, age, city, and neighborhood to personalize the interface and pharmacy search.
+- Uses the device camera or an image upload to read package text with Tesseract.js OCR.
+- Lets the user check or correct the recognized medicine name before looking it up.
+- Retrieves U.S. FDA drug-label sections through the public openFDA label API.
+- Shows label dosage, pediatric-use, warnings, contraindications, side-effect, and interaction sections when those sections are present in the returned label.
+- Opens Google Maps pharmacy search for the selected area; pharmacy availability and hours must be checked with the listing.
+- Includes a responsive white-and-yellow design with a CSS phone-scanner illustration.
 
 ## Run locally
 
@@ -11,13 +19,15 @@ npm install
 npm run dev
 ```
 
-Open the local URL printed by Vite. Create a production build with `npm run build`.
+Open the local address printed by Vite. Create a production build with `npm run build`.
 
 ## Deploy to Netlify
 
 - Build command: `npm run build`
 - Publish directory: `dist`
 
-## Data and privacy
+## Important safety and scope
 
-City searches are sent to Open-Meteo to find coordinates, then coordinates are used to fetch forecast data. Using the location button asks the browser for permission and sends the coordinates to Open-Meteo. The app does not store a location profile. Forecasts are informational and may be delayed or incomplete; check local official weather alerts for safety-critical decisions.
+This is an educational prototype, not a medical device or clinical decision-support system. OCR can misread labels, and a database match does not authenticate the photographed product. It does **not** calculate or recommend an individual's dose. The FDA API returns U.S. product-label text, which can be lengthy, product-specific, or unavailable; it does not provide complete coverage for every medicine or country. The app deliberately asks users to confirm the medicine name and have a pharmacist or clinician interpret dosing, especially for children. Never use a demo result instead of the exact package directions or professional advice. For urgent symptoms or possible overdose, contact local emergency services or poison control.
+
+The name, age, and selected location are kept in page state and are not sent to the FDA API. The medicine name is sent to openFDA for label lookup. OCR is processed in the browser using Tesseract.js. Pharmacy search opens Google Maps in a new tab.

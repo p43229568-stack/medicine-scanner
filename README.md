@@ -1,16 +1,17 @@
-# MedLens — Medicine Scanner
+# MediScan — medicine label scanner
 
-A safety-first hackathon prototype for scanning medicine packaging and finding official drug-label information.
+MediScan is a mobile-first hackathon prototype inspired by the supplied screenshots. It includes a three-step onboarding experience, a medicine scanning screen, official-label lookup, safety sections, and a nearby-pharmacy search link.
 
-## What it does
+## Features
 
-- Collects a name, age, city, and neighborhood to personalize the interface and pharmacy search.
-- Uses the device camera or an image upload to read package text with Tesseract.js OCR.
-- Lets the user check or correct the recognized medicine name before looking it up.
-- Retrieves U.S. FDA drug-label sections through the public openFDA label API.
-- Shows label dosage, pediatric-use, warnings, contraindications, side-effect, and interaction sections when those sections are present in the returned label.
-- Opens Google Maps pharmacy search for the selected area; pharmacy availability and hours must be checked with the listing.
-- Includes a responsive white-and-yellow design with a CSS phone-scanner illustration.
+- Welcome screen and responsive phone-scanner illustration.
+- Three onboarding steps: name/age, optional phone, and home city/area.
+- Phone number is optional, stays only in page memory, and is never sent or used for calls/texts. Avoid entering real personal details on a public demo.
+- Browser geolocation is optional; the user must grant permission. A location name is used to prepare a Google Maps pharmacy search.
+- Camera/photo upload and in-browser OCR with Tesseract.js. OCR proposes text only; the user must verify the medicine name.
+- Manual medicine-name lookup against the U.S. FDA openFDA drug-label API.
+- Product label sections for directions, pediatric use, warnings, contraindications, side effects, interactions, and storage when available.
+- Explicit child-safety warnings and no personalized dose calculation.
 
 ## Run locally
 
@@ -19,15 +20,16 @@ npm install
 npm run dev
 ```
 
-Open the local address printed by Vite. Create a production build with `npm run build`.
+## Build and deploy
 
-## Deploy to Netlify
+```bash
+npm run build
+```
 
-- Build command: `npm run build`
-- Publish directory: `dist`
+For Netlify, use build command `npm run build` and publish directory `dist`.
 
-## Important safety and scope
+## Safety and data limitations
 
-This is an educational prototype, not a medical device or clinical decision-support system. OCR can misread labels, and a database match does not authenticate the photographed product. It does **not** calculate or recommend an individual's dose. The FDA API returns U.S. product-label text, which can be lengthy, product-specific, or unavailable; it does not provide complete coverage for every medicine or country. The app deliberately asks users to confirm the medicine name and have a pharmacist or clinician interpret dosing, especially for children. Never use a demo result instead of the exact package directions or professional advice. For urgent symptoms or possible overdose, contact local emergency services or poison control.
+This educational prototype is not a doctor, pharmacist, medical device, or clinical decision-support system. It cannot diagnose, authenticate a medicine from a photo, determine that a label match is the same product, or calculate a safe personal dose. Do not use it to decide what medicine or dose to take, especially for children. Follow the specific package leaflet and prescription; ask a parent/guardian and licensed pharmacist or clinician.
 
-The name, age, and selected location are kept in page state and are not sent to the FDA API. The medicine name is sent to openFDA for label lookup. OCR is processed in the browser using Tesseract.js. Pharmacy search opens Google Maps in a new tab.
+FDA label data is U.S.-specific, may be incomplete or lengthy, and may not cover products sold in other countries. OCR can be wrong. The app sends the typed medicine name to openFDA when a lookup is requested. If the user chooses current location, approximate coordinates are sent to OpenStreetMap Nominatim for reverse geocoding; pharmacy searches open Google Maps. The app does not persist the profile. For an emergency or possible overdose, contact local emergency services or poison control.
